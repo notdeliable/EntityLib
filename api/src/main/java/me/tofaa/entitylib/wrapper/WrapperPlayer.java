@@ -36,6 +36,17 @@ public class WrapperPlayer extends WrapperLivingEntity {
         );
     }
 
+    public WrapperPlayServerPlayerInfoUpdate tabListPacket(List<TextureProperty> textureProperties) {
+        EnumSet<WrapperPlayServerPlayerInfoUpdate.Action> actions = EnumSet.of(
+                WrapperPlayServerPlayerInfoUpdate.Action.ADD_PLAYER,
+                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LISTED
+        );
+        return new WrapperPlayServerPlayerInfoUpdate(
+                actions,
+                createInfo(textureProperties)
+        );
+    }
+
     public List<TextureProperty> getTextures() {
         return profile.getTextureProperties();
     }
@@ -118,6 +129,21 @@ public class WrapperPlayer extends WrapperLivingEntity {
     protected WrapperPlayServerPlayerInfoUpdate.PlayerInfo createInfo() {
         return new WrapperPlayServerPlayerInfoUpdate.PlayerInfo(
                 profile,
+                tablist,
+                latency,
+                gameMode,
+                displayName,
+                null
+        );
+    }
+
+    protected WrapperPlayServerPlayerInfoUpdate.PlayerInfo createInfo(List<TextureProperty> textureProperties) {
+        return new WrapperPlayServerPlayerInfoUpdate.PlayerInfo(
+                new UserProfile(
+                    profile.getUUID(),
+                    profile.getName(),
+                    textureProperties
+                ),
                 tablist,
                 latency,
                 gameMode,
